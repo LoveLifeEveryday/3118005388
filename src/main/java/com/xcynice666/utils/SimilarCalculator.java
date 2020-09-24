@@ -46,20 +46,10 @@ public class SimilarCalculator {
         List<WordGroup> words1 = TextUtil.string2WordList(text1);
         List<WordGroup> words2 = TextUtil.string2WordList(text2);
 
-        return getSimilarityImpl(words1, words2);
+        return getSimilarity(words1, words2);
     }
 
-    /**
-     * 可以对于计算的相似度保留小数点后4位
-     */
-    public static double getSimilarity(List<WordGroup> words1, List<WordGroup> words2) {
 
-        //(int) (score * 10000 + 0.5)其实代表保留小数点后4位 ,因为10342.213强制转换不就是10342。对于强制转换添加0.5就等于四舍五入
-//        score = (int) (score * 10000 + 0.5) / (double) 10000;
-
-        //100为满分
-        return getSimilarityImpl(words1, words2);
-    }
 
     /**
      * 文本相似度计算
@@ -67,7 +57,7 @@ public class SimilarCalculator {
      * 余弦夹角原理： 向量a=(x1,y1),向量b=(x2,y2) similarity=a.b/|a|*|b| a.b=x1x2+y1y2
      * |a|=根号[(x1)^2+(y1)^2],|b|=根号[(x2)^2+(y2)^2]
      */
-    public static double getSimilarityImpl(List<WordGroup> words1, List<WordGroup> words2) {
+    public static double getSimilarity(List<WordGroup> words1, List<WordGroup> words2) {
 
         // 第一步：向每一个Word对象的属性都注入weight（权重）属性值
         taggingWeightByFrequency(words1, words2);
