@@ -13,7 +13,7 @@ import org.junit.Test;
  * @Date 2020/9/24 17:57
  **/
 
-public class MainApplicationTest {
+public class MainEntranceTest {
 
     @BeforeClass
     public static void beforeTest() {
@@ -27,7 +27,7 @@ public class MainApplicationTest {
 
 
     /**
-     * 测试 文本为空文本的情况
+     * test 空文本
      */
     @Test
     public void testForEmpty() {
@@ -35,23 +35,16 @@ public class MainApplicationTest {
     }
 
     /**
-     * 测试 输入的对比文本路径参数为错误参数的情况
+     * test 对比文本路径参数错误的情况
      */
     @Test
     public void testForWrongOriginArgument() {
         test("src/test/testcase/123.txt", "src/test/testcase/orig_0.8_add.txt", "src/test/result/testAddResult");
     }
 
-    /**
-     * 测试 输出文件路径参数为错误参数的情况
-     */
-    @Test
-    public void testForWrongOutputArgument() {
-        test("src/test/testcase/orig.txt", "src/test/testcase/orig.txt", "src/test/result/testAWrongArgumentResult");
-    }
 
     /**
-     * 测试20%文本添加情况：orig_0.8_add.txt
+     * 测试20%文本添加
      */
     @Test
     public void testForAdd() {
@@ -59,7 +52,7 @@ public class MainApplicationTest {
     }
 
     /**
-     * 测试20%文本删除情况：orig_0.8_del.txt
+     * 测试20%文本删除
      */
     @Test
     public void testForDel() {
@@ -67,7 +60,7 @@ public class MainApplicationTest {
     }
 
     /**
-     * 测试20%文本乱序情况：orig_0.8_dis_1.txt
+     * 测试20%文本乱序
      */
     @Test
     public void testForDis1() {
@@ -75,7 +68,7 @@ public class MainApplicationTest {
     }
 
     /**
-     * 测试20%文本乱序情况：orig_0.8_dis_3.txt
+     * 20%文本乱序情况
      */
     @Test
     public void testForDis3() {
@@ -83,20 +76,14 @@ public class MainApplicationTest {
     }
 
     /**
-     * 测试20%文本乱序情况：orig_0.8_dis_7.txt
+     * 20%文本乱序情况
      */
     @Test
     public void testForDis7() {
         test("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_7.txt", "src/test/result/testDis7Result.txt");
     }
 
-    /**
-     * 测试20%文本乱序情况：orig_0.8_dis_10.txt
-     */
-    @Test
-    public void testForDis10() {
-        test("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_10.txt", "src/test/result/testDis10Result.txt");
-    }
+
 
     /**
      * 测试20%文本乱序情况：orig_0.8_dis_15.txt
@@ -115,7 +102,7 @@ public class MainApplicationTest {
     }
 
     /**
-     * 测试20%文本错别字情况：orig_0.8_rep.txt
+     * 测试20%文本错别字情况
      */
     @Test
     public void testForRep() {
@@ -123,14 +110,12 @@ public class MainApplicationTest {
     }
 
     /**
-     * 测试相同文本：orig.txt
+     * 测试相同 txt
      */
     @Test
     public void testForSame() {
         test("src/test/testcase/orig.txt", "src/test/testcase/orig.txt", "src/test/result/testSameResult.txt");
     }
-
-
 
 
     /**
@@ -145,7 +130,6 @@ public class MainApplicationTest {
             MainEntrance.checkSimilarity(orgTextPath, newTextPath, outTextPath);
         } catch (Exception e) {
             e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在 Failures 中
             Assert.fail();
         }
     }
