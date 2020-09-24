@@ -1,6 +1,6 @@
 package com.xcynice666.utils;
 
-import com.xcynice666.AtomicFloat;
+import com.xcynice666.bean.AtomicFloat;
 import com.xcynice666.bean.WordGroup;
 import org.apache.commons.lang3.StringUtils;
 

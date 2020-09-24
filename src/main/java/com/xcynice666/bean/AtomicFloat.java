@@ -1,4 +1,4 @@
-package com.xcynice666;
+package com.xcynice666.bean;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
