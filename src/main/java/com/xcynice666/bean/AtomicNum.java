@@ -9,16 +9,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Date: 2020/9/24 11:35
  * @Description: 原子类线程安全 Float
  */
-public class AtomicFloat extends Number {
+public class AtomicNum extends Number {
 
-    private final AtomicInteger bits;
+    private final AtomicInteger i;
 
-    public AtomicFloat() {
+    public AtomicNum() {
         this(0f);
     }
 
-    public AtomicFloat(float initialValue) {
-        bits = new AtomicInteger(Float.floatToIntBits(initialValue));
+    public AtomicNum(float initialValue) {
+        i = new AtomicInteger(Float.floatToIntBits(initialValue));
     }
 
 
@@ -39,12 +39,12 @@ public class AtomicFloat extends Number {
 
 
     public final boolean compareAndSet(float expect, float update) {
-        return !bits.compareAndSet(Float.floatToIntBits(expect), Float.floatToIntBits(update));
+        return !i.compareAndSet(Float.floatToIntBits(expect), Float.floatToIntBits(update));
     }
 
 
     public final float get() {
-        return Float.intBitsToFloat(bits.get());
+        return Float.intBitsToFloat(i.get());
     }
 
     @Override

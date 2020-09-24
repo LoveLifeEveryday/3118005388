@@ -1,6 +1,6 @@
 package com.xcynice666.utils;
 
-import com.xcynice666.bean.AtomicFloat;
+import com.xcynice666.bean.AtomicNum;
 import com.xcynice666.bean.WordGroup;
 import org.apache.commons.lang3.StringUtils;
 
@@ -73,11 +73,11 @@ public class SimilarCalculator {
         wordGroups.addAll(wordGroups1);
         wordGroups.addAll(wordGroups2);
         // a.b
-        AtomicFloat ab = new AtomicFloat();
+        AtomicNum ab = new AtomicNum();
         // a的平方
-        AtomicFloat aa = new AtomicFloat();
+        AtomicNum aa = new AtomicNum();
         // b的平方
-        AtomicFloat bb = new AtomicFloat();
+        AtomicNum bb = new AtomicNum();
 
         // 3.得到词频向量，后进行计算
         getWordFrequencyVector(wordGroups, weightMap1, weightMap2, ab, aa, bb);
@@ -98,7 +98,7 @@ public class SimilarCalculator {
      * @param aa         a*a
      * @param bb         b*b
      */
-    private static void getWordFrequencyVector(Set<WordGroup> wordGroups, Map<String, Float> weightMap1, Map<String, Float> weightMap2, AtomicFloat ab, AtomicFloat aa, AtomicFloat bb) {
+    private static void getWordFrequencyVector(Set<WordGroup> wordGroups, Map<String, Float> weightMap1, Map<String, Float> weightMap2, AtomicNum ab, AtomicNum aa, AtomicNum bb) {
         wordGroups.parallelStream().forEach(wordGroup -> {
             Float x1 = weightMap1.get(wordGroup.getName());
             Float x2 = weightMap2.get(wordGroup.getName());
