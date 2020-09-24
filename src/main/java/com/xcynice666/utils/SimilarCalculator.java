@@ -21,17 +21,19 @@ public class SimilarCalculator {
 
     /**
      * 计算两个字符串的相似度
+     *
+     * @param string1 字符串1
+     * @param string2 字符串2
+     * @return 相似度
      */
-    public static double getSimilarity(String text1, String text2) {
-        boolean isBlank1 = StringUtils.isBlank(text1);
-        boolean isBlank2 = StringUtils.isBlank(text2);
-
+    public static double getSimilarity(String string1, String string2) {
+        boolean isBlank1 = StringUtils.isBlank(string1);
+        boolean isBlank2 = StringUtils.isBlank(string2);
 
         //这个代表如果两个字符串相等那当然返回1了
-        if (text1.equalsIgnoreCase(text2)) {
+        if (string1.equalsIgnoreCase(string2)) {
             return 1.00;
         }
-
         //如果内容为空，或者字符长度为0，则代表完全相同
         if (isBlank1 && isBlank2) {
             return 1.00;
@@ -43,139 +45,143 @@ public class SimilarCalculator {
         }
 
         //第一步：进行分词
-        List<WordGroup> words1 = TextUtil.string2WordList(text1);
-        List<WordGroup> words2 = TextUtil.string2WordList(text2);
+        List<WordGroup> words1 = TextUtil.string2WordList(string1);
+        List<WordGroup> words2 = TextUtil.string2WordList(string2);
 
         return getSimilarity(words1, words2);
     }
 
 
-
     /**
-     * 文本相似度计算
-     * 判定方式：余弦相似度，通过计算两个向量的夹角余弦值来评估他们的相似度
-     * 余弦夹角原理： 向量a=(x1,y1),向量b=(x2,y2) similarity=a.b/|a|*|b| a.b=x1x2+y1y2
-     * |a|=根号[(x1)^2+(y1)^2],|b|=根号[(x2)^2+(y2)^2]
+     * 文本相似度计算 比较了三种方式，最终决定使用余弦相似度的方式实现该需求
+     *
+     * @param wordGroups1 分词1
+     * @param wordGroups2 分词2
+     * @return 文本相似度
      */
-    public static double getSimilarity(List<WordGroup> words1, List<WordGroup> words2) {
+    public static double getSimilarity(List<WordGroup> wordGroups1, List<WordGroup> wordGroups2) {
 
-        // 第一步：向每一个Word对象的属性都注入weight（权重）属性值
-        taggingWeightByFrequency(words1, words2);
+        // 1.向每一个Word对象的属性都注入weight（权重）属性值
+        getWeightByFrequency(wordGroups1, wordGroups2);
 
-        //第二步：计算词频
-        //通过上一步让每个Word对象都有权重值，那么在封装到map中（key是词，value是该词出现的次数（即权重））
-        Map<String, Float> weightMap1 = getFastSearchMap(words1);
-        Map<String, Float> weightMap2 = getFastSearchMap(words2);
+        // 2.计算词频
+        Map<String, Float> weightMap1 = getFastSearchMap(wordGroups1);
+        Map<String, Float> weightMap2 = getFastSearchMap(wordGroups2);
 
         //将所有词都装入set容器中
         Set<WordGroup> wordGroups = new HashSet<>();
-        wordGroups.addAll(words1);
-        wordGroups.addAll(words2);
+        wordGroups.addAll(wordGroups1);
+        wordGroups.addAll(wordGroups2);
+        // a.b
+        AtomicFloat ab = new AtomicFloat();
+        // a的平方
+        AtomicFloat aa = new AtomicFloat();
+        // b的平方
+        AtomicFloat bb = new AtomicFloat();
 
-        AtomicFloat ab = new AtomicFloat();// a.b
-        AtomicFloat aa = new AtomicFloat();// |a|的平方
-        AtomicFloat bb = new AtomicFloat();// |b|的平方
+        // 3.得到词频向量，后进行计算
+        getWordFrequencyVector(wordGroups, weightMap1, weightMap2, ab, aa, bb);
 
-        // 第三步：写出词频向量，后进行计算
+        BigDecimal aabb = BigDecimal.valueOf(Math.sqrt(aa.doubleValue())).multiply(BigDecimal.valueOf(Math.sqrt(bb.doubleValue())));
+
+        // 相似度=a.b/|a|*|b|
+        return BigDecimal.valueOf(ab.get()).divide(aabb, 9, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    /**
+     * 得到词频向量
+     *
+     * @param wordGroups 词组
+     * @param weightMap1 词权 map1
+     * @param weightMap2 词权 map2
+     * @param ab         a*b
+     * @param aa         a*a
+     * @param bb         b*b
+     */
+    private static void getWordFrequencyVector(Set<WordGroup> wordGroups, Map<String, Float> weightMap1, Map<String, Float> weightMap2, AtomicFloat ab, AtomicFloat aa, AtomicFloat bb) {
         wordGroups.parallelStream().forEach(wordGroup -> {
-            //看同一词在a、b两个集合出现的此次
             Float x1 = weightMap1.get(wordGroup.getName());
             Float x2 = weightMap2.get(wordGroup.getName());
+            float oneDimension;
             if (x1 != null && x2 != null) {
                 //x1x2
-                float oneOfTheDimension = x1 * x2;
+                oneDimension = x1 * x2;
                 //+
-                ab.addAndGet(oneOfTheDimension);
-            }
-            if (x1 != null) {
+                ab.addAndGet(oneDimension);
+            } else if (x1 != null) {
                 //(x1)^2
-                float oneOfTheDimension = x1 * x1;
+                oneDimension = x1 * x1;
                 //+
-                aa.addAndGet(oneOfTheDimension);
-            }
-            if (x2 != null) {
+                aa.addAndGet(oneDimension);
+            } else if (x2 != null) {
                 //(x2)^2
-                float oneOfTheDimension = x2 * x2;
+                oneDimension = x2 * x2;
                 //+
-                bb.addAndGet(oneOfTheDimension);
+                bb.addAndGet(oneDimension);
             }
         });
-        //|a| 对aa开方
-        double aaa = Math.sqrt(aa.doubleValue());
-        //|b| 对bb开方
-        double bbb = Math.sqrt(bb.doubleValue());
-
-        //使用BigDecimal保证精确计算浮点数
-        //double aabb = aaa * bbb;
-        BigDecimal aabb = BigDecimal.valueOf(aaa).multiply(BigDecimal.valueOf(bbb));
-
-        //similarity=a.b/|a|*|b|
-        //divide参数说明：aabb被除数,9表示小数点后保留9位，最后一个表示用标准的四舍五入法
-        return BigDecimal.valueOf(ab.get()).divide(aabb, 9, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
 
     /**
-     * 向每一个Word对象的属性都注入weight（权重）属性值
+     * 注入权重属性值
+     *
+     * @param words1 词组1
+     * @param words2 词组2
      */
-    protected static void taggingWeightByFrequency(List<WordGroup> words1, List<WordGroup> words2) {
+    protected static void getWeightByFrequency(List<WordGroup> words1, List<WordGroup> words2) {
         if (words1.get(0).getWeight() != null && words2.get(0).getWeight() != null) {
             return;
         }
-        //词频统计（key是词，value是该词在这段句子中出现的次数）
-        Map<String, AtomicInteger> frequency1 = getFrequency(words1);
-        Map<String, AtomicInteger> frequency2 = getFrequency(words2);
-        // 标注权重（该词出现的次数）
-        words1.parallelStream().forEach(wordGroup -> wordGroup.setWeight(frequency1.get(wordGroup.getName()).floatValue()));
-        words2.parallelStream().forEach(wordGroup -> wordGroup.setWeight(frequency2.get(wordGroup.getName()).floatValue()));
+        getWeightByList(words1);
+        getWeightByList(words2);
     }
+
+
+    /**
+     * 通过 List 得到权值
+     *
+     * @param wordGroupList wordGroupList
+     */
+    private static void getWeightByList(List<WordGroup> wordGroupList) {
+        Map<String, AtomicInteger> frequency = getFrequency(wordGroupList);
+        wordGroupList.parallelStream().forEach(wordGroup -> wordGroup.setWeight(frequency.get(wordGroup.getName()).floatValue()));
+    }
+
 
     /**
      * 统计词频
      *
-     * @return 词频统计图
+     * @param wordGroups 抽离出来的分词列表
+     * @return 词频 map
      */
     private static Map<String, AtomicInteger> getFrequency(List<WordGroup> wordGroups) {
-
         Map<String, AtomicInteger> freq = new HashMap<>();
         wordGroups.forEach(i -> freq.computeIfAbsent(i.getName(), k -> new AtomicInteger()).incrementAndGet());
         return freq;
     }
 
-    /*
-     * 输出：词频统计信息
-     */
-/*    private static String getWordsFrequencyString(Map<String, AtomicInteger> frequency) {
-        StringBuilder str = new StringBuilder();
-        if (frequency != null && !frequency.isEmpty()) {
-            AtomicInteger integer = new AtomicInteger();
-            frequency.entrySet().stream().sorted((a, b) -> b.getValue().get() - a.getValue().get()).forEach(
-                    i -> str.append("\t").append(integer.incrementAndGet()).append("、").append(i.getKey()).append("=")
-                            .append(i.getValue()).append("\n"));
-        }
-        str.setLength(str.length() - 1);
-        return str.toString();
-    }*/
 
     /**
      * 构造权重快速搜索容器
+     *
+     * @param wordGroups 抽离出来的分词列表
+     * @return 权重快速搜索容器
      */
     protected static Map<String, Float> getFastSearchMap(List<WordGroup> wordGroups) {
-        //空的词语列表
+        //词语列表为空
         if (wordGroups == null || wordGroups.isEmpty()) {
             return Collections.emptyMap();
         }
-        Map<String, Float> weightMap = new ConcurrentHashMap<>(wordGroups.size());
 
+        Map<String, Float> weightMap = new ConcurrentHashMap<>(wordGroups.size());
         wordGroups.parallelStream().forEach(i -> {
             if (i.getWeight() != null) {
                 weightMap.put(i.getName(), i.getWeight());
             } else {
-                System.out.println("no word weight info:" + i.getName());
+                System.out.println("无词权信息:" + i.getName());
             }
         });
         return weightMap;
     }
-
-
 }
