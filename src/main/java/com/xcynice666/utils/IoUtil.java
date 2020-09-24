@@ -14,14 +14,7 @@ import java.nio.charset.StandardCharsets;
  * @Description: io 流操作的工具类
  */
 public class IoUtil {
-
-    /**
-     * 工具类不应该实例化
-     */
-    private IoUtil() {
-        throw new IllegalStateException("不应该实例化ConvertUtil");
-    }
-
+    
     /**
      * 将文件路径对应的 txt文本转化为内存中的字符串
      *
@@ -36,15 +29,15 @@ public class IoUtil {
             return "";
         }
         try {
-            //输入流读取
-            FileInputStream in = new FileInputStream(file);
-            int size = in.available();
+            FileInputStream inputStream = new FileInputStream(file);
+            int size = inputStream.available();
             byte[] buffer = new byte[size];
-            int bufferCount = in.read(buffer);
+            int bufferCount = inputStream.read(buffer);
             if (bufferCount == 0) {
                 System.out.println(filepath + " 是空文本");
             }
-            in.close();
+            //关闭输入流，否则可能会内存泄漏
+            inputStream.close();
             //设置输出为 UTF-8 的格式，防止乱码
             str = new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException e) {
@@ -61,21 +54,17 @@ public class IoUtil {
      * @param result         字符串形式传入结果
      */
     public static void convertString2File(String outputFilePath, String result) {
-        //创建输出路径的文件
+        // 创建输出路径的文件
         File outputFile = new File(outputFilePath);
-/*        if(! outputFile.exists()){
-            System.out.println("输出文件路径无效，答案无法输出，请检查参数 !");
-            return;
-        }*/
-        //写入
+        // 写入
         try (FileWriter fr = new FileWriter(outputFile)) {
-            char[] cs = result.toCharArray();
-            fr.write(cs);
+            char[] c = result.toCharArray();
+            fr.write(c);
+            //记得关闭
             fr.close();
-            System.out.println(" 结果已被写入 " + outputFilePath);
+            System.out.println("结果已被写入：" + outputFilePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

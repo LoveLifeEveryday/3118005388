@@ -16,7 +16,7 @@ import java.util.List;
  * @Description: 文本处理工具类
  */
 public class TextUtil {
-    
+
     /**
      * 使用 HanLp 框架进行分词处理
      *
