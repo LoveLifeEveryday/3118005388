@@ -1,8 +1,8 @@
 package com.xcynice666;
 
 
-import com.xcynice666.utils.ConvertUtil;
-import com.xcynice666.utils.SimilarTextCalculator;
+import com.xcynice666.utils.IoUtil;
+import com.xcynice666.utils.SimilarCalculator;
 import com.xcynice666.utils.TextUtil;
 
 import java.io.File;
@@ -43,13 +43,13 @@ public class MainApplication {
             System.out.println("文件路径无效，请检查文件路径参数!\n");
             return;
         }
-        String orgString = ConvertUtil.convertTxt2String(orgTextPath);
-        String newString = ConvertUtil.convertTxt2String(newTextPath);
+        String orgString = IoUtil.convertTxt2String(orgTextPath);
+        String newString = IoUtil.convertTxt2String(newTextPath);
         //执行计算
-        double ans = SimilarTextCalculator.getSimilarity(orgString, newString);
+        double ans = SimilarCalculator.getSimilarity(orgString, newString);
         //将结果字符串输出到 指定的文件
         String ansString = TextUtil.formatPrint(ans);
-        ConvertUtil.convertString2File(ansFilePath, orgTextPath + "\n" + newTextPath + "\n"
+        IoUtil.convertString2File(ansFilePath, orgTextPath + "\n" + newTextPath + "\n"
                 + "Similar Score ：" + ansString);
         //控制台输出
         System.out.println("Similar Score  : " + ansString + "\n");

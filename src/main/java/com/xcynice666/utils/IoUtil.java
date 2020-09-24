@@ -9,16 +9,16 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * @author xucanyou666
- * @ClassName: WordGroup
+ * @ClassName: IoUtil
  * @Date: 2020/9/24 11:32
- * @Description: 转换工具类
+ * @Description: io 流操作的工具类
  */
-public class ConvertUtil {
+public class IoUtil {
 
     /**
      * 工具类不应该实例化
      */
-    private ConvertUtil() {
+    private IoUtil() {
         throw new IllegalStateException("不应该实例化ConvertUtil");
     }
 

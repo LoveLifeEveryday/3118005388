@@ -14,13 +14,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author xucanyou666
  * @ClassName: SimilarTextCalculator
  * @Date: 2020/9/24 11:34
- * @Description: 相似文本计算工具类
+ * @Description: 相似度计算工具类
  */
-public class SimilarTextCalculator {
-
-    private SimilarTextCalculator() {
-        throw new IllegalStateException("SimilarTextCalculator Should not be instantiated");
-    }
+public class SimilarCalculator {
 
 
     /**
@@ -29,6 +25,13 @@ public class SimilarTextCalculator {
     public static double getSimilarity(String text1, String text2) {
         boolean isBlank1 = StringUtils.isBlank(text1);
         boolean isBlank2 = StringUtils.isBlank(text2);
+
+
+        //这个代表如果两个字符串相等那当然返回1了
+        if (text1.equalsIgnoreCase(text2)) {
+            return 1.00;
+        }
+
         //如果内容为空，或者字符长度为0，则代表完全相同
         if (isBlank1 && isBlank2) {
             return 1.00;
@@ -38,15 +41,12 @@ public class SimilarTextCalculator {
         if (isBlank1 || isBlank2) {
             return 0.0;
         }
-        //这个代表如果两个字符串相等那当然返回1了
-        if (text1.equalsIgnoreCase(text2)) {
-            return 1.00;
-        }
+
         //第一步：进行分词
         List<WordGroup> words1 = TextUtil.string2WordList(text1);
         List<WordGroup> words2 = TextUtil.string2WordList(text2);
 
-        return getSimilarity(words1, words2);
+        return getSimilarityImpl(words1, words2);
     }
 
     /**
@@ -82,9 +82,9 @@ public class SimilarTextCalculator {
         wordGroups.addAll(words1);
         wordGroups.addAll(words2);
 
-     AtomicFloat ab = new AtomicFloat();// a.b
-       AtomicFloat aa = new AtomicFloat();// |a|的平方
-       AtomicFloat bb = new AtomicFloat();// |b|的平方
+        AtomicFloat ab = new AtomicFloat();// a.b
+        AtomicFloat aa = new AtomicFloat();// |a|的平方
+        AtomicFloat bb = new AtomicFloat();// |b|的平方
 
         // 第三步：写出词频向量，后进行计算
         wordGroups.parallelStream().forEach(wordGroup -> {
