@@ -1,4 +1,4 @@
-package com.xcynice666;
+package com.xcynice666.main;
 
 
 import com.xcynice666.utils.IoUtil;
@@ -9,10 +9,9 @@ import java.io.File;
 
 /**
  * @Author xcynice666
- * @Description 主程序
+ * @Description 主程序入口
  * @Date 2020/9/24 11:14
  **/
-
 
 public class MainEntrance {
 
