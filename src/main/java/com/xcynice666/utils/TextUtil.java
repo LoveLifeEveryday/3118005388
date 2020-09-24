@@ -5,8 +5,8 @@ import com.hankcs.hanlp.seg.common.Term;
 import com.xcynice666.bean.WordGroup;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -24,12 +24,13 @@ public class TextUtil {
      * @return 分词的集合 List<WordGroup>
      */
     public static List<WordGroup> string2WordList(String sentence) {
+
+        // 1、 采用HanLP标准分词进行分词
         List<Term> termList = HanLP.segment(sentence);
-        List<WordGroup> wordGroupList = new ArrayList<>();
-        for (Term term : termList) {
-            wordGroupList.add(new WordGroup(term.word, term.nature.toString()));
-        }
-        return wordGroupList;
+        // 2、重新封装到Word对象中
+        return termList.stream().map(term ->
+                new WordGroup(term.word, term.nature.toString())).collect(Collectors.toList());
+
     }
 
 
@@ -40,9 +41,8 @@ public class TextUtil {
      * @return 百分数的相似度
      */
     public static String formatPrint(double similarity) {
-        double similarityRatio = similarity * 100.0;
-        BigDecimal bigDecimal = new BigDecimal(String.valueOf(similarityRatio));
-        return bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
+        BigDecimal decimal = new BigDecimal(String.valueOf(similarity * 100.0));
+        return decimal.setScale(2,BigDecimal.ROUND_HALF_UP).toPlainString();
     }
 
 }

@@ -108,12 +108,14 @@ public class SimilarCalculator {
                 oneDimension = x1 * x2;
                 //+
                 ab.addAndGet(oneDimension);
-            } else if (x1 != null) {
+            }
+            if (x1 != null) {
                 //(x1)^2
                 oneDimension = x1 * x1;
                 //+
                 aa.addAndGet(oneDimension);
-            } else if (x2 != null) {
+            }
+            if (x2 != null) {
                 //(x2)^2
                 oneDimension = x2 * x2;
                 //+

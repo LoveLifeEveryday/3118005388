@@ -130,13 +130,7 @@ public class MainApplicationTest {
         test("src/test/testcase/orig.txt", "src/test/testcase/orig.txt", "src/test/result/testSameResult.txt");
     }
 
-    /**
-     * 测试文本的子集文本：orig_sub.txt
-     */
-    @Test
-    public void testForSub() {
-        test("src/test/testcase/orig.txt", "src/test/testcase/orig_sub.txt", "src/test/result/testSubResult.txt");
-    }
+
 
 
     /**
