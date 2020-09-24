@@ -99,7 +99,7 @@ public class SimilarCalculator {
      * @param bb         b*b
      */
     private static void getWordFrequencyVector(Set<WordGroup> wordGroups, Map<String, Float> weightMap1, Map<String, Float> weightMap2, AtomicFloat ab, AtomicFloat aa, AtomicFloat bb) {
-        wordGroups.parallelStream().forEach(wordGroup -> {
+        wordGroups.forEach(wordGroup -> {
             Float x1 = weightMap1.get(wordGroup.getName());
             Float x2 = weightMap2.get(wordGroup.getName());
             float oneDimension;
@@ -147,7 +147,7 @@ public class SimilarCalculator {
      */
     private static void getWeightByList(List<WordGroup> wordGroupList) {
         Map<String, AtomicInteger> frequency = getFrequency(wordGroupList);
-        wordGroupList.parallelStream().forEach(wordGroup -> wordGroup.setWeight(frequency.get(wordGroup.getName()).floatValue()));
+        wordGroupList.forEach(wordGroup -> wordGroup.setWeight(frequency.get(wordGroup.getName()).floatValue()));
     }
 
 
@@ -177,7 +177,7 @@ public class SimilarCalculator {
         }
 
         Map<String, Float> weightMap = new ConcurrentHashMap<>(wordGroups.size());
-        wordGroups.parallelStream().forEach(i -> {
+        wordGroups.forEach(i -> {
             if (i.getWeight() != null) {
                 weightMap.put(i.getName(), i.getWeight());
             } else {
