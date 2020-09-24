@@ -17,12 +17,12 @@ public class MainApplicationTest {
 
     @BeforeClass
     public static void beforeTest() {
-        System.out.println("测试即将开始");
+        System.out.println("测试马上开始啦");
     }
 
     @AfterClass
     public static void afterTest() {
-        System.out.println("测试结束");
+        System.out.println("测试已经结束啦");
     }
 
 
@@ -31,13 +31,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForEmpty() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/empty.txt", "src/test/result/testEmptyResult.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/orig.txt", "src/test/testcase/empty.txt", "src/test/result/testEmptyResult.txt");
     }
 
     /**
@@ -45,13 +39,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForWrongOriginArgument() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/123.txt", "src/test/testcase/orig_0.8_add.txt", "src/test/result/testAddResult.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/123.txt", "src/test/testcase/orig_0.8_add.txt", "src/test/result/testAddResult");
     }
 
     /**
@@ -59,13 +47,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForWrongOutputArgument() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig.txt", "src/test/result/testAWrongArgumentResult");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig.txt", "src/test/result/testAWrongArgumentResult");
     }
 
     /**
@@ -73,13 +55,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForAdd() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_add.txt", "src/test/result/testAddResult.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_add.txt", "src/test/result/testAddResult.txt");
     }
 
     /**
@@ -87,13 +63,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForDel() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_del.txt", "src/test/result/testDelResult.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_del.txt", "src/test/result/testDelResult.txt");
     }
 
     /**
@@ -101,13 +71,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForDis1() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_1.txt", "src/test/result/testDis1Result.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_1.txt", "src/test/result/testDis1Result.txt");
     }
 
     /**
@@ -115,14 +79,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForDis3() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_3.txt", "src/test/result/testDis3Result.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
-
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_3.txt", "src/test/result/testDis3Result.txt");
     }
 
     /**
@@ -130,13 +87,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForDis7() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_7.txt", "src/test/result/testDis7Result.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_7.txt", "src/test/result/testDis7Result.txt");
     }
 
     /**
@@ -144,13 +95,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForDis10() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_10.txt", "src/test/result/testDis10Result.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_10.txt", "src/test/result/testDis10Result.txt");
     }
 
     /**
@@ -158,13 +103,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForDis15() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_15.txt", "src/test/result/testDis15Result.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_dis_15.txt", "src/test/result/testDis15Result.txt");
     }
 
     /**
@@ -172,13 +111,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForMix() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_mix.txt", "src/test/result/testMixResult.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_mix.txt", "src/test/result/testMixResult.txt");
     }
 
     /**
@@ -186,13 +119,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForRep() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_rep.txt", "src/test/result/testRepResult.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig_0.8_rep.txt", "src/test/result/testRepResult.txt");
     }
 
     /**
@@ -200,13 +127,7 @@ public class MainApplicationTest {
      */
     @Test
     public void testForSame() {
-        try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig.txt", "src/test/result/testSameResult.txt");
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
-            Assert.fail();
-        }
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig.txt", "src/test/result/testSameResult.txt");
     }
 
     /**
@@ -214,11 +135,23 @@ public class MainApplicationTest {
      */
     @Test
     public void testForSub() {
+        test("src/test/testcase/orig.txt", "src/test/testcase/orig_sub.txt", "src/test/result/testSubResult.txt");
+    }
+
+
+    /**
+     * 测试的方法
+     *
+     * @param orgTextPath 原先文章路径
+     * @param newTextPath 新文章路径
+     * @param outTextPath 输出的结果路径
+     */
+    private void test(String orgTextPath, String newTextPath, String outTextPath) {
         try {
-            MainEntrance.checkSimilarity("src/test/testcase/orig.txt", "src/test/testcase/orig_sub.txt", "src/test/result/testSubResult.txt");
+            MainEntrance.checkSimilarity(orgTextPath, newTextPath, outTextPath);
         } catch (Exception e) {
             e.printStackTrace();
-            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在Failures中
+            // 如果抛出异常，证明测试失败,没有通过，没通过的测试计数在 Failures 中
             Assert.fail();
         }
     }
