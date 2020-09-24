@@ -1,3 +1,0 @@
-src/test/testcase/orig.txt
-src/test/testcase/empty.txt
-相似度 ：0.00
